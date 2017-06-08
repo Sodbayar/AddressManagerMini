@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context useNaming="true">
+	<Resource description="DB Connection" auth="Container"
+		driverClassName="com.mysql.jdbc.Driver" name="jdbc/mydbTest" type="javax.sql.DataSource"
+		url="jdbc:mysql://localhost:8006/mydb?useSSL=false" username="root"
+		password="1234" maxIdle="5" maxTotal="5" maxWaitMillis="1000" />
+</Context>
