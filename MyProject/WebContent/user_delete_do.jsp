@@ -5,7 +5,7 @@ request.setCharacterEncoding("utf-8");
 String idx = request.getParameter("idx");
 String tableDB = request.getParameter("table");
 try {
-ArticleDB db = new ArticleDB();
+AmmoDB db = new AmmoDB();
 db.setTableDB(tableDB);
 db.deleteRecord(Integer.parseInt(idx));
 
