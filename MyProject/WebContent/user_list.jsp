@@ -5,9 +5,9 @@
 Class.forName("com.mysql.jdbc.Driver");
 
 String DB_URL = "jdbc:mysql://localhost:3306/mydb?useSSL=false";
-String DB_TABLE = request.getParameter("table");
-if (DB_TABLE == null) {
-   DB_TABLE = "memr";   
+String DB_GROUP = request.getParameter("group");
+if (DB_GROUP == null) {
+   DB_GROUP = "work";   
 }
 String DB_USER = "root";
 String DB_PASS = "1234";
@@ -24,10 +24,11 @@ ResultSet rs = null;
 try {
    con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
    stmt = con.createStatement();
-
+/* 
    DatabaseMetaData md = con.getMetaData();
-   rs = md.getTables("mydb", "public", "%" ,new String[] {"TABLE"} );/****wooohoooo**********/
-   
+   rs = md.getTables("mydb", "public", "%" ,new String[] {"TABLE"} ); */ 
+   String query = "SELECT DISTINCT grp from memr";
+   rs = stmt.executeQuery(query);
 %>
 
 <!DOCTYPE html>
@@ -74,7 +75,7 @@ try {
          <% 
          while(rs.next()) { 
          
-         %><li><a href='index.jsp?table=<%=rs.getString(3)%>'><%=rs.getString(3) %></a></li>
+         %><li><a href='index.jsp?group=<%=rs.getString("grp")%>'><%=rs.getString("grp") %></a></li>
          
          <%
          } //end-of-while
@@ -92,7 +93,7 @@ try {
 <% 
    try {
    
-   String query = "SELECT idx, grp, name, phone, email, pos, dep FROM " + DB_TABLE + SEARCH_QRY;
+   String query = "SELECT idx, name, phone, email, pos, dep FROM memr where grp='"+DB_GROUP+"'";    //+ SEARCH_QRY;
    
    
    rs = stmt.executeQuery(query);
@@ -101,7 +102,6 @@ try {
    <table border="1" style="border-collapse:collapse">
       <caption>현재 선택된 블로그형 게시판 제목</caption>
       <tr>
-         <th>Index</th>
          <th>Group</th>
          <th>Name: </th>
          <th>Phone: </th>
@@ -114,17 +114,16 @@ try {
       while (rs.next()) {
       %>
       <tr>
-         <td><%=rs.getInt("idx") %></td>
-         <td><%=rs.getString("grp") %></td>
-         <td><%=rs.getString("name") %></td>
+         <td><%=DB_GROUP %></td>
+         <td><a href="#"><%=rs.getString("name") %></a></td>
          <td><%=rs.getString("phone") %></td>
          <td><%=rs.getString("email") %></td>
          <td><%=rs.getString("pos") %></td>
          <td><%=rs.getString("dep") %></td>
          
          <td>
-         <A class="fa fa-trash" href="user_delete_do.jsp?idx=<%=rs.getInt("idx")%>&table=<%=DB_TABLE%>"/> &nbsp&nbsp&nbsp
-         <A class="fa fa-cogs" href='user_modify.jsp?idx=<%=rs.getInt("idx")%>&table=<%=DB_TABLE%>'/>
+         <a class="fa fa-trash" href='user_delete_do.jsp?idx=<%=rs.getInt("idx")%>&group=<%=DB_GROUP%>'/> &nbsp&nbsp&nbsp
+         <a class="fa fa-cogs" href='user_modify.jsp?idx=<%=rs.getInt("idx")%>&table=<%=DB_GROUP%>'/>
          </td>
          
       </tr>
@@ -139,7 +138,7 @@ try {
    out.print("err:" + e.toString());
 }
 %>
-<A href="user_save.jsp?table=<%=DB_TABLE%>">회원 추가</A>
+<A href="user_save.jsp?table=<%=DB_GROUP%>">회원 추가</A>
 
 
 </body>

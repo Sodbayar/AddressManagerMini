@@ -1,36 +1,128 @@
+<%@page import="sun.security.pkcs11.Secmod.DbMode"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ page import="com.bean.*, java.sql.*, javax.naming.NamingException" %>
+<%@ page import="com.bean.*, java.sql.*, javax.naming.NamingException"%>
 
 <%
-String idx = request.getParameter("idx");
-String tableDB = request.getParameter("table");
-try {
-	ArticleDB db = new ArticleDB();
-	db.setTableDB(tableDB);
-	Article art = db.getRecord(Integer.parseInt(idx));
+	Class.forName("com.mysql.jdbc.Driver");
+	Connection con = null;
+	Statement stmt = null;
+	ResultSet rs = null;
+	String idx = request.getParameter("idx");
+	String groupDB = request.getParameter("group");
+	try {
+		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?useSSL=false", "root", "1234");
+		stmt = con.createStatement();
+		rs = stmt.executeQuery("SELECT DISTINCT grp from memr");
+		AmmoDB db = new AmmoDB();
+		//db.setGroupDB(groupDB);
+		Ammo a = db.getRecord(Integer.parseInt(idx));
 %>
-<%=tableDB %>
+<%=groupDB%>
 <html>
+<meta charset="utf-8">
+<head>
+<title>index</title>
+<link rel="stylesheet" href="./css/user_list.css">
+<link rel="shortcut icon" type="image/png"
+	href="https://cdn1.iconfinder.com/data/icons/phone-mockups/64/facebook_twitter_laptop_online-128.png" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
 <body>
-<FORM action="user_modify_do.jsp?table=<%=tableDB%>" method="post">
-Number : <INPUT type="text" name="idx" readOnly value="<%=idx %>"><BR>
-ID : <INPUT type="text" name="id" maxlength="8" size="8"
-value="<%=art.getId()%>"><BR>
-성명 : <INPUT type="text" name="name" maxlength="12" size="12"
-value="<%=art.getName()%>"><BR>
-암호 : <INPUT type="password" name="pwd" value="<%=art.getPwd()%>"><BR>
-<INPUT type="submit" value=" 수 정 ">
-</FORM>
+	<header>
+		<div>
+			<a href="#" id="home">Home</a> <a href="#" id="click">현재 선택된 블로그형
+				게시판 제목</a>
+		</div>
+	</header>
+
+	<section>
+		<div>
+			<a href="#">All Groups
+				</p>
+				<ul class="sec-ul">
+
+					<%
+						while (rs.next()) {
+					%><li><a href='index.jsp?group=<%=rs.getString("grp")%>'><%=rs.getString("grp")%></a></li>
+
+					<%
+						} //end-of-while
+					%>
+				</ul>
+		</div>
+
+	</section>
+
+
+	<form name="input" action="user_modify_do.jsp?group=<%=groupDB%>&idx=<%=idx%>" method="post" id="form" tabindex="-1" onsubmit="return printAlert();">
+		<table border="1">
+			<tr>
+				<th>Group</th>
+				<td><input type="text" name="grp" value="<%=a.getGroup()%>"></td>
+			</tr>
+			<tr>
+				<th>Name:</th>
+				<td><input type="text" name="name" value="<%=a.getName()%>"></td>
+			</tr>
+			<!-- <tr>
+				<th>Photo:</th>
+				<td><input type="file" name="photo" id="photo"></td>
+			</tr> -->
+			<tr>
+				<th>Phone:</th>
+				<td><input type="text" name="phone" value="<%=a.getPhone()%>"></td>
+			</tr>
+			<tr>
+				<th>Email:</th>
+				<td><input type="email" name="email" value="<%=a.getEmail()%>"></td>
+			</tr>
+			<tr>
+				<th>Position:</th>
+				<td><input type="text" name="pos" value="<%=a.getPosition()%>"></td>
+			</tr>
+			<tr>
+				<th>Department Name:</th>
+				<td><input type="text" name="dep" value="<%=a.getDepartment()%>"></td>
+			</tr>
+			<tr>
+				<th>Title:</th>
+				<td><input type="text" name="title" value="<%=a.getTitle()%>"></td>
+			</tr>
+			<tr>
+				<th>Birth-date:</th>
+				<td><input type="date" name="bday" value="<%=a.getBday()%>"></td>
+			</tr>
+			<tr>
+				<th>Address:</th>
+				<td><input type="text" name="addr" value="<%=a.getAddress()%>"></td>
+			</tr>
+			<tr>
+				<th>Homepage:</th>
+				<td><input type="url" name="hpage" value="<%=a.getHomepage()%>"></td>
+			</tr>
+			<tr>
+				<th>SNS ID:</th>
+				<td><input type="text" name="sns" value="<%=a.getSns()%>"></td>
+			</tr>
+			<tr>
+				<th>Memo:</th>
+				<td><textarea name="memo" rows="4" cols="26" value="<%=a.getMemo()%>"
+						style="opacity: 0.8"></textarea></td>
+			</tr>
+		</table>
+		<input type="submit" name="submit" id="sbmt" style="width: 70px; margin: 13px 75px"> 
+		<input type="reset" name="res" style="width: 70px; margin: 13px 90px">
+	</form>
+
+
 </body>
 </html>
-
 <%
 db.close();
 } catch (SQLException e) {
-	out.print(e);
-	return;
-} catch (NamingException e) {
-	out.print(e);
-	return;
+	out.print("err:" + e.toString());
 }
 %>

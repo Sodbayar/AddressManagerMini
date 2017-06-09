@@ -2,7 +2,6 @@ package com.bean;
 
 public class Ammo {
 	int index;
-	
 	String group;
 	String name;
 	String photo;
@@ -15,6 +14,7 @@ public class Ammo {
 	String address;
 	String homepage;
 	String sns;
+	String memo;
 	
 	public int getIndex() {
 		return index;
@@ -100,6 +100,4 @@ public class Ammo {
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-	String memo;
-	
 }

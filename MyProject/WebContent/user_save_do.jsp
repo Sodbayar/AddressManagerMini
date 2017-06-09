@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%-- <%@ page language="java" contentType="text/html; charset=UTF-8"
 	import="java.sql.*, com.bean.*, javax.naming.*"%>
 
 <%
@@ -30,3 +30,4 @@ try {
 /*****************************/
 response.sendRedirect("user_list.jsp?table=" + tableDB);
 %>
+ --%>

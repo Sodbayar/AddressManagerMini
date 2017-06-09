@@ -9,18 +9,18 @@ public class AmmoDB {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	private Statement stmt;
-	private String tableDB = "memr";
+	private String groupDB = "work";
 	
 	public AmmoDB() throws SQLException, NamingException {
 		con = DsCon.getConnection();
 	}
 		
-	public String getTableDB() {
-		return tableDB;
+	public String getGroupDB() {
+		return groupDB;
 	}
 
-	public void setTableDB(String tableDB) {
-		this.tableDB = tableDB;
+	public void setGroupDB(String groupDB) {
+		this.groupDB = groupDB;
 	}
 
 	public void createTable(String table) throws SQLException {
@@ -30,7 +30,7 @@ public class AmmoDB {
 	}
 	
 	public void insertRecord(Ammo a) throws SQLException {
-		String sql = "INSERT INTO " + tableDB + "(grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO memr(grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, a.getGroup());
 		pstmt.setString(2, a.getName());
@@ -48,7 +48,7 @@ public class AmmoDB {
 	}
 	
 	public void UpdateRecord(Ammo a) throws SQLException {
-		String sql = "UPDATE " + tableDB + " SET grp=?, name=?, phone=?, email=?, pos=?, dep=?, title=?, bday=?, addr=?, hpage=?, sns=?, memo=? WHERE idx=?";
+		String sql = "UPDATE memr SET grp=?, name=?, phone=?, email=?, pos=?, dep=?, title=?, bday=?, addr=?, hpage=?, sns=?, memo=? WHERE idx=?";
 		pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, a.getGroup());
 		pstmt.setString(2, a.getName());
@@ -67,7 +67,7 @@ public class AmmoDB {
 	}
 
 	public Ammo getRecord(int idx) throws SQLException {
-		String sql = "SELECT grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo FROM " + tableDB + " WHERE idx=?";
+		String sql = "SELECT grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo FROM memr WHERE idx=?";
 		
 		pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, idx);
@@ -94,8 +94,8 @@ public class AmmoDB {
 	
 	
 	public void deleteRecord(int idx) throws SQLException {
-		String sql = "DELETE FROM " + tableDB + " WHERE idx = ?";
-		String alter = "ALTER TABLE " + tableDB + " auto_increment=1";
+		String sql = "DELETE FROM memr WHERE idx=?";
+		String alter = "ALTER TABLE memr auto_increment=1";
 		Statement stmt = con.createStatement();
 		
 		
@@ -103,7 +103,7 @@ public class AmmoDB {
 		pstmt.setInt(1, idx);
 		pstmt.executeUpdate();	
 		
-		rs = stmt.executeQuery("SELECT * FROM " + tableDB);
+		rs = stmt.executeQuery("SELECT * FROM memr");
 		if (!rs.next()) {
 			stmt.executeUpdate(alter);			
 		}
