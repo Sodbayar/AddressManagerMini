@@ -9,15 +9,20 @@
 	ResultSet rs = null;
 	String idx = request.getParameter("idx");
 	String groupDB = request.getParameter("group");
+	String location = "user_modify_do.jsp?group=" + groupDB + "&idx=" + idx;
 	try {
 		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?useSSL=false", "root", "1234");
 		stmt = con.createStatement();
 		rs = stmt.executeQuery("SELECT DISTINCT grp from memr");
 		AmmoDB db = new AmmoDB();
-		//db.setGroupDB(groupDB);
+		if (idx == null) {
+			idx = "1";
+			location = "user_save_do.jsp";
+		}
 		Ammo a = db.getRecord(Integer.parseInt(idx));
 %>
-<%=groupDB%>
+<%=location %>
+
 <html>
 <meta charset="utf-8">
 <head>
@@ -50,6 +55,7 @@
 
 					<%
 						} //end-of-while
+						rs.beforeFirst();
 					%>
 				</ul>
 		</div>
@@ -57,11 +63,17 @@
 	</section>
 
 
-	<form name="input" action="user_modify_do.jsp?group=<%=groupDB%>&idx=<%=idx%>" method="post" id="form" tabindex="-1" onsubmit="return printAlert();">
+	<form name="input" action="<%=location%>" method="post">
 		<table border="1">
 			<tr>
 				<th>Group</th>
-				<td><input type="text" name="grp" value="<%=a.getGroup()%>"></td>
+				<td><%-- <input type="text" name="grp" value="<%=a.getGroup()%>"> --%>
+					<select>
+					<%while(rs.next()) { %>
+						<option value="<%=rs.getString("grp")%>"><%=rs.getString("grp")%></option>
+					<%} %>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<th>Name:</th>
@@ -77,7 +89,7 @@
 			</tr>
 			<tr>
 				<th>Email:</th>
-				<td><input type="email" name="email" value="<%=a.getEmail()%>"></td>
+				<td><input type="text" name="email" value="<%=a.getEmail()%>"></td>
 			</tr>
 			<tr>
 				<th>Position:</th>
@@ -93,7 +105,7 @@
 			</tr>
 			<tr>
 				<th>Birth-date:</th>
-				<td><input type="date" name="bday" value="<%=a.getBday()%>"></td>
+				<td><input type="text" name="bday" value="<%=a.getBday()%>"></td>
 			</tr>
 			<tr>
 				<th>Address:</th>
@@ -101,7 +113,7 @@
 			</tr>
 			<tr>
 				<th>Homepage:</th>
-				<td><input type="url" name="hpage" value="<%=a.getHomepage()%>"></td>
+				<td><input type="text" name="hpage" value="<%=a.getHomepage()%>"></td>
 			</tr>
 			<tr>
 				<th>SNS ID:</th>
@@ -113,8 +125,8 @@
 						style="opacity: 0.8"></textarea></td>
 			</tr>
 		</table>
-		<input type="submit" name="submit" id="sbmt" style="width: 70px; margin: 13px 75px"> 
-		<input type="reset" name="res" style="width: 70px; margin: 13px 90px">
+		<input type="button" value="Cancel" onClick="location.href='user_list.jsp?group=<%=groupDB%>'" id="sbmt" style="width:70px; margin: 13px 75px"> 
+		<input type="submit" value="Submit" style="width: 70px; margin:13px 90px">
 	</form>
 
 

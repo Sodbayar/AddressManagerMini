@@ -30,7 +30,7 @@ public class AmmoDB {
 	}
 	
 	public void insertRecord(Ammo a) throws SQLException {
-		String sql = "INSERT INTO memr(grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO memr(grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo)  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, a.getGroup());
 		pstmt.setString(2, a.getName());
@@ -43,7 +43,7 @@ public class AmmoDB {
 		pstmt.setString(9, a.getAddress());
 		pstmt.setString(10, a.getHomepage());
 		pstmt.setString(11, a.getSns());
-		pstmt.setString(12, a.getMemo());		
+		pstmt.setString(12, a.getMemo());
 		pstmt.executeUpdate();		
 	}
 	

@@ -16,6 +16,23 @@ public class Ammo {
 	String sns;
 	String memo;
 	
+	public Ammo() {
+		this.index = 1111;
+		this.group = "";
+		this.name = "";
+		this.photo = "";
+		this.phone = "";
+		this.email = "";
+		this.position = "";
+		this.department = "";
+		this.title = "";
+		this.bday = "";
+		this.address = "";
+		this.homepage = "";
+		this.sns = "";
+		this.memo = "";		
+	}
+	
 	public int getIndex() {
 		return index;
 	}
