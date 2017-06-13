@@ -27,7 +27,7 @@ try {
 /* 
    DatabaseMetaData md = con.getMetaData();
    rs = md.getTables("mydb", "public", "%" ,new String[] {"TABLE"} ); */ 
-   String query = "SELECT DISTINCT grp from memr";
+   String query = "SELECT grp from groups ORDER BY grp";
    rs = stmt.executeQuery(query);
 %>
 
@@ -69,13 +69,14 @@ try {
    
    <section>
       <div>
-         <a href="#">All Groups</p>
+         <a href="#">Groups</a>
+         <a href="create_group.jsp"><i class="fa fa-plus" aria-hidden="true"></i></a>
          <ul class="sec-ul">
          
          <% 
          while(rs.next()) { 
          
-         %><li><a href='index.jsp?group=<%=rs.getString("grp")%>'><%=rs.getString("grp") %></a></li>
+         %><li><a href='index.jsp?group=<%=rs.getString("grp")%>'><%=rs.getString("grp") %></a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href='edit_group.jsp?group=<%=rs.getString("grp") %>' class="fa fa-pencil-square-o" aria-hidden="true"></a></li>
          
          <%
          } //end-of-while

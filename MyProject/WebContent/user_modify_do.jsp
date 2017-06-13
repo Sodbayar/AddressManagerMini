@@ -2,7 +2,7 @@
 import="com.bean.*, java.sql.*, javax.naming.NamingException"%>
 <%
 request.setCharacterEncoding("utf-8");
-String grp = request.getParameter("grp");
+String grp = request.getParameter("grp"); if (grp == null || grp.length() == 0 || grp.equals(" ")) grp = "My Contacts";
 String name = request.getParameter("name");
 String phone = request.getParameter("phone");
 String email = request.getParameter("email");

@@ -23,10 +23,18 @@ public class AmmoDB {
 		this.groupDB = groupDB;
 	}
 
-	public void createTable(String table) throws SQLException {
-		String sql = "CREATE TABLE " + table + " (idx int not null auto_increment, id varchar(10), name varchar(20), pwd varchar(20), primary key(idx))";
+	public void createGroup(String group) throws SQLException {
+		String sql = "INSERT INTO groups (grp) values('" + group + "')";
 		stmt = con.createStatement();
 		stmt.executeUpdate(sql);
+	}
+	
+	public void editGroup(String newName, String oldName) throws SQLException {
+		String sql = "update memr set grp='" + newName + "' where grp='" + oldName + "'";
+		String sql2 = "update groups set grp='" + newName + "' where grp='" + oldName + "'";
+		stmt = con.createStatement();
+		stmt.executeUpdate(sql);
+		stmt.executeUpdate(sql2);
 	}
 	
 	public void insertRecord(Ammo a) throws SQLException {

@@ -2,7 +2,7 @@
 
 <html>
 <body>
-<form action="create_table_do.jsp" method="post">
+<form action="create_group_do.jsp" method="post">
 Group name: <input type="text" name="grpname"/></br>
 <input type="submit" value="create"/>
 </form>

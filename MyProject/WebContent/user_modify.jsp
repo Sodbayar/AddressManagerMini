@@ -13,7 +13,7 @@
 	try {
 		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?useSSL=false", "root", "1234");
 		stmt = con.createStatement();
-		rs = stmt.executeQuery("SELECT DISTINCT grp from memr");
+		rs = stmt.executeQuery("SELECT grp from groups");
 		AmmoDB db = new AmmoDB();
 		if (idx == null) {
 			idx = "1";
@@ -21,7 +21,6 @@
 		}
 		Ammo a = db.getRecord(Integer.parseInt(idx));
 %>
-<%=location %>
 
 <html>
 <meta charset="utf-8">
@@ -51,7 +50,7 @@
 
 					<%
 						while (rs.next()) {
-					%><li><a href='index.jsp?group=<%=rs.getString("grp")%>'><%=rs.getString("grp")%></a></li>
+					%><li><a href='index.jsp?group=<%=rs.getString("grp")%>'><%=rs.getString("grp")%></a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="#" class="fa fa-pencil-square-o" aria-hidden="true"></a></li>
 
 					<%
 						} //end-of-while
@@ -68,7 +67,7 @@
 			<tr>
 				<th>Group</th>
 				<td><%-- <input type="text" name="grp" value="<%=a.getGroup()%>"> --%>
-					<select>
+					<select name="grp">
 					<%while(rs.next()) { %>
 						<option value="<%=rs.getString("grp")%>"><%=rs.getString("grp")%></option>
 					<%} %>
@@ -125,7 +124,7 @@
 						style="opacity: 0.8"></textarea></td>
 			</tr>
 		</table>
-		<input type="button" value="Cancel" onClick="location.href='user_list.jsp?group=<%=groupDB%>'" id="sbmt" style="width:70px; margin: 13px 75px"> 
+		<input type="button" value="Cancel" onClick="history.back()" id="sbmt" style="width:70px; margin: 13px 75px"> 
 		<input type="submit" value="Submit" style="width: 70px; margin:13px 90px">
 	</form>
 

@@ -2,7 +2,7 @@
 <%@page import="com.bean.*"%>
 <% String table = request.getParameter("grpname"); %>
 <% AmmoDB db = new AmmoDB();
-	db.createTable(table);
+	db.createGroup(table);
 	
-	response.sendRedirect("user_list.jsp");
+	response.sendRedirect("user_list.jsp?group=My Contacts");
 %>

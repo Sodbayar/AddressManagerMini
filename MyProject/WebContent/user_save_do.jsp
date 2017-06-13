@@ -3,7 +3,7 @@
 
 <%
 request.setCharacterEncoding("UTF-8");
-String grp = request.getParameter("grp").trim(); if (grp == null) grp = "";
+String grp = request.getParameter("grp").trim(); if (grp == null || grp.length() == 0 || grp.equals(" ")) grp = "My Contacts";
 String name = request.getParameter("name").trim();
 String phone = request.getParameter("phone").trim();
 String email = request.getParameter("email").trim();
