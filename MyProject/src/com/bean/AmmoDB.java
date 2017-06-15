@@ -9,7 +9,7 @@ public class AmmoDB {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	private Statement stmt;
-	private String groupDB = "work";
+	private String groupDB = "My Contacts";
 	
 	public AmmoDB() throws SQLException, NamingException {
 		con = DsCon.getConnection();
@@ -38,7 +38,7 @@ public class AmmoDB {
 	}
 	
 	public void insertRecord(Ammo a) throws SQLException {
-		String sql = "INSERT INTO memr(grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo)  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO memr(grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo, fileName)  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, a.getGroup());
 		pstmt.setString(2, a.getName());
@@ -52,11 +52,12 @@ public class AmmoDB {
 		pstmt.setString(10, a.getHomepage());
 		pstmt.setString(11, a.getSns());
 		pstmt.setString(12, a.getMemo());
+		pstmt.setString(13, a.getPhoto());
 		pstmt.executeUpdate();		
 	}
 	
 	public void UpdateRecord(Ammo a) throws SQLException {
-		String sql = "UPDATE memr SET grp=?, name=?, phone=?, email=?, pos=?, dep=?, title=?, bday=?, addr=?, hpage=?, sns=?, memo=? WHERE idx=?";
+		String sql = "UPDATE memr SET grp=?, name=?, phone=?, email=?, pos=?, dep=?, title=?, bday=?, addr=?, hpage=?, sns=?, memo=?, fileName=? WHERE idx=?";
 		pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, a.getGroup());
 		pstmt.setString(2, a.getName());
@@ -70,12 +71,13 @@ public class AmmoDB {
 		pstmt.setString(10, a.getHomepage());
 		pstmt.setString(11, a.getSns());
 		pstmt.setString(12, a.getMemo());	
-		pstmt.setInt(13, a.getIndex());		
+		pstmt.setString(13, a.getPhoto());	
+		pstmt.setInt(14, a.getIndex());		
 		pstmt.executeUpdate();	
 	}
 
 	public Ammo getRecord(int idx) throws SQLException {
-		String sql = "SELECT grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo FROM memr WHERE idx=?";
+		String sql = "SELECT grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo, fileName FROM memr WHERE idx=?";
 		
 		pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, idx);
@@ -86,6 +88,7 @@ public class AmmoDB {
 		Ammo a = new Ammo();
 		a.setGroup(rs.getString("grp"));
 		a.setName(rs.getString("name"));
+		a.setPhoto(rs.getString("fileName"));
 		a.setPhone(rs.getString("phone"));
 		a.setEmail(rs.getString("email"));
 		a.setPosition(rs.getString("pos"));

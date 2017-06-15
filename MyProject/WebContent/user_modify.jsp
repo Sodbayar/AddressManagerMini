@@ -3,6 +3,7 @@
 <%@ page import="com.bean.*, java.sql.*, javax.naming.NamingException"%>
 
 <%
+	request.setCharacterEncoding("UTF-8");
 	Class.forName("com.mysql.jdbc.Driver");
 	Connection con = null;
 	Statement stmt = null;
@@ -17,9 +18,10 @@
 		AmmoDB db = new AmmoDB();
 		if (idx == null) {
 			idx = "1";
-			location = "user_save_do.jsp";
+			location = "user_save_do.jsp?";
 		}
 		Ammo a = db.getRecord(Integer.parseInt(idx));
+		String pic = "http://localhost:8006/MyProject/upload/" + a.getPhoto();
 %>
 
 <html>
@@ -33,6 +35,13 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
+<script>
+
+window.onload = function() {
+	document.getElementById("photo").value = <%=pic %>;
+}
+
+</script>
 
 <body>
 	<header>
@@ -62,7 +71,7 @@
 	</section>
 
 
-	<form name="input" action="<%=location%>" method="post">
+	<form name="input" action="<%=location%>&pic=<%=a.getPhoto() %>" method="post" enctype="multipart/form-data">
 		<table border="1">
 			<tr>
 				<th>Group</th>
@@ -78,10 +87,10 @@
 				<th>Name:</th>
 				<td><input type="text" name="name" value="<%=a.getName()%>"></td>
 			</tr>
-			<!-- <tr>
-				<th>Photo:</th>
-				<td><input type="file" name="photo" id="photo"></td>
-			</tr> -->
+			<tr>
+				<th>Photo:</th><%=pic%>
+				<td><img src="<%=pic %>" width="50px" height="50px"><input type="file" name="photo" id="photo"></td>
+			</tr>
 			<tr>
 				<th>Phone:</th>
 				<td><input type="text" name="phone" value="<%=a.getPhone()%>"></td>

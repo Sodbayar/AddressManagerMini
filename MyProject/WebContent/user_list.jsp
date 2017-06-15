@@ -3,7 +3,6 @@
 
 <%
 Class.forName("com.mysql.jdbc.Driver");
-
 String DB_URL = "jdbc:mysql://localhost:3306/mydb?useSSL=false";
 String DB_GROUP = request.getParameter("group");
 if (DB_GROUP == null) {
@@ -20,7 +19,6 @@ else
 Connection con = null;
 Statement stmt = null;
 ResultSet rs = null;
-
 try {
    con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
    stmt = con.createStatement();
@@ -45,8 +43,8 @@ try {
 <body>
    <header>
       <div>
-         <a href="#" id="home">Home</a>
-         <a href="#" id="click">현재 선택된 블로그형 게시판 제목</a>
+         <a href="index.jsp" id="home">Home</a>
+         <a href="#" id="click">현재 선택된 그룹: <%=DB_GROUP %></a>
          <nav>
             <ul>
                <div class="head-ul">
@@ -100,9 +98,8 @@ try {
 %>
 
    <table border="1" style="border-collapse:collapse">
-      <caption>현재 선택된 블로그형 게시판 제목</caption>
+      <caption>현재 선택된 그룹: <%=DB_GROUP %></caption>
       <tr>
-         <th>Group</th>
          <th>Name: </th>
          <th>Phone: </th>
          <th>Email: </th>
@@ -114,7 +111,6 @@ try {
       while (rs.next()) {
       %>
       <tr>
-         <td><%=DB_GROUP %></td>
          <td><a href="user_modify.jsp?idx=<%=rs.getInt("idx")%>&group=<%=DB_GROUP%>"><%=rs.getString("name") %></a></td>
          <td><%=rs.getString("phone") %></td>
          <td><%=rs.getString("email") %></td>

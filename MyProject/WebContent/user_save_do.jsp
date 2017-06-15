@@ -1,25 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	import="java.sql.*, com.bean.*, javax.naming.*"%>
+	import="java.sql.*, com.bean.*, javax.naming.*"
+	import="com.oreilly.servlet.*, com.oreilly.servlet.multipart.*"%>
 
 <%
+int maxsize = 5 * 1024 * 1024;
+String grp = "My Contacts";
+
+try {
+MultipartRequest multi = new MultipartRequest(request, "C:\\Users\\Sodbayar\\git\\MyProject\\MyProject\\WebContent\\upload", maxsize, "utf-8", new DefaultFileRenamePolicy());
+
 request.setCharacterEncoding("UTF-8");
-String grp = request.getParameter("grp").trim(); if (grp == null || grp.length() == 0 || grp.equals(" ")) grp = "My Contacts";
-String name = request.getParameter("name").trim();
-String phone = request.getParameter("phone").trim();
-String email = request.getParameter("email").trim();
-String pos = request.getParameter("pos").trim();
-String dep = request.getParameter("dep").trim();
-String title = request.getParameter("title").trim();
-String bday = request.getParameter("bday").trim();
-String addr = request.getParameter("addr").trim();
-String hpage = request.getParameter("hpage").trim();
-String sns = request.getParameter("sns").trim();
-String memo = request.getParameter("memo").trim();
+grp = multi.getParameter("grp").trim(); if (grp == null || grp.length() == 0 || grp.equals(" ")) grp = "My Contacts";
+String name = multi.getParameter("name").trim();
+String photo = multi.getFilesystemName("photo").trim();
+String phone = multi.getParameter("phone").trim();
+String email = multi.getParameter("email").trim();
+String pos = multi.getParameter("pos").trim();
+String dep = multi.getParameter("dep").trim();
+String title = multi.getParameter("title").trim();
+String bday = multi.getParameter("bday").trim();
+String addr = multi.getParameter("addr").trim();
+String hpage = multi.getParameter("hpage").trim();
+String sns = multi.getParameter("sns").trim();
+String memo = multi.getParameter("memo").trim();
 
 
 Ammo a = new Ammo();
 a.setGroup(grp);
 a.setName(name);
+a.setPhoto(photo);
 a.setPhone(phone);
 a.setEmail(email);
 a.setPosition(pos);
@@ -30,7 +39,6 @@ a.setAddress(addr);
 a.setHomepage(hpage);
 a.setSns(sns);
 
-try {
 	AmmoDB db = new AmmoDB();
 	db.insertRecord(a);
 	db.close();
