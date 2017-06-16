@@ -6,9 +6,6 @@ String oldName = request.getParameter("oldName");
 String newName = request.getParameter("newName");
 %>
 
-<%=oldName%>
-<%=newName%>
-
 <%
 try {
 	AmmoDB db = new AmmoDB();

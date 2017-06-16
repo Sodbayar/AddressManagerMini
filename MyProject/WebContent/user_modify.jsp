@@ -8,6 +8,7 @@
 	Connection con = null;
 	Statement stmt = null;
 	ResultSet rs = null;
+	AmmoDB db = null;
 	String idx = request.getParameter("idx");
 	String groupDB = request.getParameter("group");
 	String location = "user_modify_do.jsp?group=" + groupDB + "&idx=" + idx;
@@ -15,12 +16,12 @@
 		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?useSSL=false", "root", "1234");
 		stmt = con.createStatement();
 		rs = stmt.executeQuery("SELECT grp from groups");
-		AmmoDB db = new AmmoDB();
+		db = new AmmoDB();
 		if (idx == null) {
 			idx = "1";
 			location = "user_save_do.jsp?";
 		}
-		Ammo a = db.getRecord(Integer.parseInt(idx));
+		Ammo a = db.getRecord(Integer.parseInt(idx), "memr");
 		String pic = "http://localhost:8006/MyProject/upload/" + a.getPhoto();
 %>
 
@@ -36,11 +37,9 @@
 
 </head>
 <script>
-
 window.onload = function() {
 	document.getElementById("photo").value = <%=pic %>;
 }
-
 </script>
 
 <body>
@@ -141,8 +140,9 @@ window.onload = function() {
 </body>
 </html>
 <%
-db.close();
 } catch (SQLException e) {
 	out.print("err:" + e.toString());
+} finally {
+	db.close();
 }
 %>

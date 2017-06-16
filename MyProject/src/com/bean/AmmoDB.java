@@ -37,8 +37,18 @@ public class AmmoDB {
 		stmt.executeUpdate(sql2);
 	}
 	
-	public void insertRecord(Ammo a) throws SQLException {
-		String sql = "INSERT INTO memr(grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo, fileName)  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	public void deleteGroup(String group) throws SQLException {
+		String sql = "DELETE FROM memr where grp='" + group + "'";
+		String sql2 = "DELETE FROM groups where grp='" + group + "'";
+		stmt = con.createStatement();
+		stmt.executeUpdate(sql);
+		stmt.executeUpdate(sql2);
+	}
+	
+	public void insertRecord(Ammo a, boolean isTrash) throws SQLException {
+		String table = "memr";
+		if (isTrash) table = "trash";
+		String sql = "INSERT INTO " + table +" (grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo, fileName)  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, a.getGroup());
 		pstmt.setString(2, a.getName());
@@ -76,8 +86,8 @@ public class AmmoDB {
 		pstmt.executeUpdate();	
 	}
 
-	public Ammo getRecord(int idx) throws SQLException {
-		String sql = "SELECT grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo, fileName FROM memr WHERE idx=?";
+	public Ammo getRecord(int idx, String table) throws SQLException {
+		String sql = "SELECT grp, name, phone, email, pos, dep, title, bday, addr, hpage, sns, memo, fileName FROM " + table + " WHERE idx=?";
 		
 		pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, idx);
@@ -103,10 +113,11 @@ public class AmmoDB {
 		return a;
 	}	
 	
+
 	
-	public void deleteRecord(int idx) throws SQLException {
+	public void moveTrash(int idx) throws SQLException {
 		String sql = "DELETE FROM memr WHERE idx=?";
-		String alter = "ALTER TABLE memr auto_increment=1";
+		String alter = "ALTER TABLE memr auto_increment=2";
 		Statement stmt = con.createStatement();
 		
 		
@@ -115,6 +126,26 @@ public class AmmoDB {
 		pstmt.executeUpdate();	
 		
 		rs = stmt.executeQuery("SELECT * FROM memr");
+		rs.next(); // 무조건 1번 index에 빈간값 있어야 함.
+		if (!rs.next()) {
+			stmt.executeUpdate(alter);			
+		}
+		stmt.close();
+	}
+
+	
+	public void deleteRecord(int idx, String table) throws SQLException {
+		String sql = "DELETE FROM " + table + " WHERE idx=?";
+		String alter = "ALTER TABLE " + table + " auto_increment=2";
+		Statement stmt = con.createStatement();
+		
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, idx);
+		pstmt.executeUpdate();	
+		
+		rs = stmt.executeQuery("SELECT * FROM " + table);
+		rs.next(); // 무조건 memr table의 1번 index에 빈간값 있어야 함.
 		if (!rs.next()) {
 			stmt.executeUpdate(alter);			
 		}

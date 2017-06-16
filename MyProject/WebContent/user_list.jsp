@@ -79,10 +79,11 @@ try {
          <%
          } //end-of-while
          %> 
+         <li><a href="trash.jsp"><i class="fa fa-trash-o" aria-hidden="true">&nbspTrash</i></a></li>
          </ul>
       </div>
       <%
-      }catch(SQLException e) {
+      } catch(SQLException e) {
          out.print("errpp:" + e.toString());
       }
       %>
@@ -98,7 +99,6 @@ try {
 %>
 
    <table border="1" style="border-collapse:collapse">
-      <caption>현재 선택된 그룹: <%=DB_GROUP %></caption>
       <tr>
          <th>Name: </th>
          <th>Phone: </th>
@@ -118,7 +118,7 @@ try {
          <td><%=rs.getString("dep") %></td>
          
          <td>
-         <a class="fa fa-trash" href='user_delete_do.jsp?idx=<%=rs.getInt("idx")%>&group=<%=DB_GROUP%>'/> &nbsp&nbsp&nbsp
+         <a class="fa fa-trash" href="user_delete.jsp?idx=<%=rs.getInt("idx")%>&group=<%=DB_GROUP%>&table=memr"/> &nbsp&nbsp&nbsp
          <a class="fa fa-cogs" href='user_modify.jsp?idx=<%=rs.getInt("idx")%>&group=<%=DB_GROUP%>'/>
          </td>
       </tr>
