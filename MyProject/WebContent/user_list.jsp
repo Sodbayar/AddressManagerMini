@@ -5,20 +5,15 @@
 Class.forName("com.mysql.jdbc.Driver");
 String DB_URL = "jdbc:mysql://localhost:3306/mydb?useSSL=false";
 String DB_GROUP = request.getParameter("group");
-if (DB_GROUP == null) {
-   DB_GROUP = "My Contacts";   
-}
+if (DB_GROUP == null)
+	DB_GROUP = "My Contacts";   
 String DB_USER = "root";
 String DB_PASS = "1234";
-String SEARCH = request.getParameter("search");
-String SEARCH_QRY = "";
-if (SEARCH == null)
-      SEARCH_QRY = "";
-else
-      SEARCH_QRY = " where (pwd like '%" + SEARCH + "%' or name like '%" + SEARCH + "%')";
+
 Connection con = null;
 Statement stmt = null;
 ResultSet rs = null;
+ResultSetMetaData rsmd = null;
 try {
    con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
    stmt = con.createStatement();
@@ -94,10 +89,10 @@ try {
 <% 
    try {
    
-   String query = "SELECT idx, name, phone, email, pos, dep FROM memr where grp='"+DB_GROUP+"'";    //+ SEARCH_QRY;
-   
-   
+   String query = "SELECT idx, name, phone, email, pos, dep FROM memr where grp='"+DB_GROUP+"'";
    rs = stmt.executeQuery(query);
+   rs.last();
+   rsmd = rs.getMetaData();
 %>
 
    <table border="1" style="border-collapse:collapse">
@@ -107,9 +102,10 @@ try {
          <th>Email: </th>
          <th>Position: </th>
          <th>Department Name: </th>
-         <th>Total: 11</th>
+         <th>Total: <%=rs.getRow() %></th>
       </tr>
       <%
+      rs.beforeFirst();
       while (rs.next()) {
       %>
       <tr>
