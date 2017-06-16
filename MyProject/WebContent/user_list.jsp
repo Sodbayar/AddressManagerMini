@@ -105,13 +105,13 @@ try {
          <th>Email: </th>
          <th>Position: </th>
          <th>Department Name: </th>
-         <th>&nbsp</th>
+         <th>Total: 11</th>
       </tr>
       <%
       while (rs.next()) {
       %>
       <tr>
-         <td><a href="user_modify.jsp?idx=<%=rs.getInt("idx")%>&group=<%=DB_GROUP%>"><%=rs.getString("name") %></a></td>
+         <td><a href="user_view.jsp?idx=<%=rs.getInt("idx")%>&group=<%=DB_GROUP%>"><%=rs.getString("name") %></a></td>
          <td><%=rs.getString("phone") %></td>
          <td><%=rs.getString("email") %></td>
          <td><%=rs.getString("pos") %></td>
@@ -124,7 +124,6 @@ try {
       </tr>
       <%} %>
    </table>
-<A href="create_table.jsp">+ Group</A>
 <%
    rs.close();
    stmt.close();

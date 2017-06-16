@@ -129,8 +129,8 @@ window.onload = function() {
 			</tr>
 			<tr>
 				<th>Memo:</th>
-				<td><textarea name="memo" rows="4" cols="26" value="<%=a.getMemo()%>"
-						style="opacity: 0.8"></textarea></td>
+				<td><input type="text" name="memo" rows="4" cols="26" value="<%=a.getMemo()%>"
+						style="opacity: 0.8"></input></td>
 			</tr>
 		</table>
 		<input type="button" value="Cancel" onClick="history.back()" id="sbmt" style="width:70px; margin: 13px 75px"> 
