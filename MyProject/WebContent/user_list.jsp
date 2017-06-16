@@ -45,23 +45,25 @@ try {
       <div>
          <a href="index.jsp" id="home">Home</a>
          <a href="#" id="click">현재 선택된 그룹: <%=DB_GROUP %></a>
-         <nav>
-            <ul>
-               <div class="head-ul">
-                  <li>
-                     ID: <input type="text" name="adminid">
-                     Password: <input type="password" name="adminpass">
-                  </li>   
-                  <li>
-                     <input type="submit" name="login" value="Log In" id="submitbutton">
-                  </li>
-                  <li>
-                     <a href="#">게시판 관리</a>
-                  </li>      
-               </div>   
-            </ul>
-            
-         </nav>
+         <form action="search.jsp" method="post">
+	         <nav>
+	            <ul>
+	               <div class="head-ul">
+	                  <li>
+	                  	<select name="key">
+	                  		<option value="grp">Group</option>
+	                  		<option value="name">Name</option>
+	                  		<option value="dep">Department</option>
+	                  	</select>
+	                     <input type="text" name="srch">
+	                  </li>   
+	                  <li>
+	                     <button type="submit">Search</button>
+	                  </li>     
+	               </div>   
+	            </ul>
+	         </nav>
+	     </form>
       </div>
    </header>
    
