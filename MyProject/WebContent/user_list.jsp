@@ -1,7 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" session="false"%>
 <%@ page import="java.sql.*" %>
 
 <%
+HttpSession session = request.getSession(false);
+if (session == null || session.getAttribute("login.name") == null) {
+	response.sendRedirect("login.jsp");
+	return;
+}
+
+
 Class.forName("com.mysql.jdbc.Driver");
 String DB_URL = "jdbc:mysql://localhost:3306/mydb?useSSL=false";
 String DB_GROUP = request.getParameter("group");
@@ -40,6 +47,7 @@ try {
       <div>
          <a href="index.jsp" id="home">Home</a>
          <a href="#" id="click">현재 선택된 그룹: <%=DB_GROUP %></a>
+         <a href="logout.jsp">Logout</a>
          <form action="search.jsp" method="post">
 	         <nav>
 	            <ul>
@@ -97,6 +105,7 @@ try {
 
    <table border="1" style="border-collapse:collapse">
       <tr>
+         <th>Group: </th>
          <th>Name: </th>
          <th>Phone: </th>
          <th>Email: </th>
@@ -108,7 +117,8 @@ try {
       rs.beforeFirst();
       while (rs.next()) {
       %>
-      <tr>
+      <tr>  
+      	 <td><%=DB_GROUP %></td>
          <td><a href="user_view.jsp?idx=<%=rs.getInt("idx")%>&group=<%=DB_GROUP%>"><%=rs.getString("name") %></a></td>
          <td><%=rs.getString("phone") %></td>
          <td><%=rs.getString("email") %></td>
@@ -129,7 +139,7 @@ try {
 } catch(SQLException e) {
    out.print("err:" + e.toString());
 }
-%>
+%>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 <A href="user_modify.jsp?group=<%=DB_GROUP%>">회원 추가</A>
 
 

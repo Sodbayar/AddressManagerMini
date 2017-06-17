@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=utf-8"
-	import="java.sql.*, com.bean.*, javax.naming.*"%>
+	import="java.sql.*, com.bean.*, javax.naming.*, java.io.*"%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String idx = request.getParameter("idx");
@@ -8,6 +8,15 @@
 	AmmoDB db = null;
 	try {
 		db = new AmmoDB();
+		/*****Deleting the file************/
+		Ammo a = db.getRecord(Integer.parseInt(idx), table);
+		String fileName = a.getPhoto();
+		ServletContext context = getServletContext();
+		String realFolder = context.getRealPath("upload");
+		File f = new File(realFolder + "\\" + fileName);
+		out.print(realFolder + "\\" + fileName);
+		f.delete();
+		/*****Deleting photo's info from SQL table*****/
 		db.deleteRecord(Integer.parseInt(idx), table);
 		db.close();
 	} catch (SQLException e) {
@@ -20,8 +29,8 @@
 		db.close();
 	}
 
-	if (table.equals("trash"))
+	/* if (table.equals("trash"))
 		response.sendRedirect("trash.jsp");
 	else
-		response.sendRedirect("user_list.jsp?group=" + groupDB);
+		response.sendRedirect("user_list.jsp?group=" + groupDB); */
 %>

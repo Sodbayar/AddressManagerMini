@@ -1,8 +1,13 @@
-<%@page import="sun.security.pkcs11.Secmod.DbMode"%>
+<%@page import="sun.security.pkcs11.Secmod.DbMode" session="false"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ page import="com.bean.*, java.sql.*, javax.naming.NamingException"%>
 
 <%
+	HttpSession session = request.getSession(false);
+	if (session == null || session.getAttribute("login.name") == null) {
+		response.sendRedirect("login.jsp");
+		return;
+	}
 	request.setCharacterEncoding("UTF-8");
 	Class.forName("com.mysql.jdbc.Driver");
 	Connection con = null;
@@ -45,20 +50,21 @@ window.onload = function() {
 <body>
 	<header>
 		<div>
-			<a href="#" id="home">Home</a> <a href="#" id="click">현재 선택된 블로그형
-				게시판 제목</a>
+			<a href="index.jsp" id="home">Home</a> <a href="#" id="click">현재 선택된 블로그형: Modify</a>
 		</div>
 	</header>
 
 	<section>
 		<div>
-			<a href="#">All Groups
-				</p>
+			<a href="#">All Groups</a>
+            <a href="create_group.jsp"><i class="fa fa-plus" aria-hidden="true"></i></a>
+            <a href="logout.jsp">Logout</a>
+         
 				<ul class="sec-ul">
 
 					<%
 						while (rs.next()) {
-					%><li><a href='index.jsp?group=<%=rs.getString("grp")%>'><%=rs.getString("grp")%></a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="#" class="fa fa-pencil-square-o" aria-hidden="true"></a></li>
+					%><li><a href='index.jsp?group=<%=rs.getString("grp")%>'><%=rs.getString("grp")%></a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="edit_group.jsp?group=<%=rs.getString("grp") %>" class="fa fa-pencil-square-o" aria-hidden="true"></a></li>
 
 					<%
 						} //end-of-while
@@ -87,7 +93,7 @@ window.onload = function() {
 				<td><input type="text" name="name" value="<%=a.getName()%>"></td>
 			</tr>
 			<tr>
-				<th>Photo:</th><%=pic%>
+				<th>Photo:</th>
 				<td><img src="<%=pic %>" width="50px" height="50px"><input type="file" name="photo" id="photo"></td>
 			</tr>
 			<tr>
@@ -96,7 +102,7 @@ window.onload = function() {
 			</tr>
 			<tr>
 				<th>Email:</th>
-				<td><input type="text" name="email" value="<%=a.getEmail()%>"></td>
+				<td><input type="email" name="email" value="<%=a.getEmail()%>"></td>
 			</tr>
 			<tr>
 				<th>Position:</th>

@@ -1,6 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  session="false"%>
 
 <%
+	
+	HttpSession session = request.getSession(false);
+	if (session == null || session.getAttribute("login.name") == null) {
+		response.sendRedirect("login.jsp");
+		return;
+	}
+
 	String url = "user_list.jsp?group=";
 	String firstTable = request.getParameter("group");
 	String searchTable = request.getParameter("search");

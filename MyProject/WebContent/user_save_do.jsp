@@ -6,6 +6,8 @@
 int maxsize = 5 * 1024 * 1024;
 String grp = "My Contacts";
 try {
+ServletContext context = getServletContext();
+String realFolder = context.getRealPath("upload");
 MultipartRequest multi = new MultipartRequest(request, "C:\\Users\\Sodbayar\\git\\MyProject\\MyProject\\WebContent\\upload", maxsize, "utf-8", new DefaultFileRenamePolicy());
 request.setCharacterEncoding("UTF-8");
 grp = multi.getParameter("grp").trim(); if (grp == null || grp.length() == 0 || grp.equals(" ")) grp = "My Contacts";
